@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ToDesk</string>
+    <string name="liste_des_devoirs">Liste des devoirs</string>
+    <string name="raffraichir">Raffraichir</string>
 </resources>

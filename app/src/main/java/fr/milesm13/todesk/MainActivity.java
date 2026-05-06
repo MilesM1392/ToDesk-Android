@@ -21,16 +21,13 @@ import fr.milesm13.todesk.components.DevoirAdapter;
 import fr.milesm13.todesk.services.Devoir;
 import fr.milesm13.todesk.services.RetrofitConnection;
 import fr.milesm13.todesk.services.apiServices;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-
     public apiServices apiServices;
 
-    RecyclerView recyclerView;
     DevoirAdapter adapter;
     List<Devoir> devoirs = new ArrayList<>();
 
@@ -38,66 +35,52 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
+
+        //Layout
         setContentView(R.layout.activity_main);
+
+        // WTF is this ?
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-
-        //Utilisation de retrofit et appel de l'API
-        apiServices = RetrofitConnection.getClient().create(apiServices.class);
-        chargerDevoirs();
-
-        //Header de l'appli
+        // Toolbar
         MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
-        //Mise en place du recyclerView
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
+        }
 
-        // Layout manager (OBLIGATOIRE)
-        setContentView(R.layout.activity_main);
-
+        // RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-
-        // Fake data pour test
-        Devoir d1 = new Devoir("machin", "truc", "15-12-2026", "");
-        // ⚠️ ajoute un constructeur ou setters si besoin
-
-        devoirs.add(d1);
-
+            //Adapter du recycler view
         adapter = new DevoirAdapter(devoirs);
         recyclerView.setAdapter(adapter);
+
+        // API
+        apiServices = RetrofitConnection.getClient().create(apiServices.class);
+        chargerDevoirs();
     }
-
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
     }
-
     private void chargerDevoirs() {
-
-
         apiServices.getDevoirs().enqueue(new Callback<List<Devoir>>() {
             @Override
             public void onResponse(Call<List<Devoir>> call, Response<List<Devoir>> response) {
-                System.out.println(response.body());
 
                 if (response.isSuccessful() && response.body() != null) {
                     devoirs.addAll(response.body());
                     adapter.notifyDataSetChanged();
-                    List<Devoir> devoirs = response.body();
-
-
-                    for (Devoir devoir : devoirs) {
-                        Log.d("API_TEST", devoir.getTitle());
-                    }
                 } else {
                     Log.e("API_TEST", "Réponse vide ou erreur");
-                    System.out.println("foiré");
                 }
             }
             @Override
