@@ -3,6 +3,7 @@ package fr.milesm13.todesk;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
@@ -11,6 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.MaterialToolbar;
 
@@ -18,17 +20,24 @@ import java.util.ArrayList;
 import java.util.List;
 
 import fr.milesm13.todesk.components.DevoirAdapter;
+import fr.milesm13.todesk.controllers.DevoirController;
 import fr.milesm13.todesk.services.Devoir;
 import fr.milesm13.todesk.services.RetrofitConnection;
-import fr.milesm13.todesk.services.apiServices;
+import fr.milesm13.todesk.services.ApiServices;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
-    public apiServices apiServices;
+    public ApiServices apiServices;
 
     DevoirAdapter adapter;
+
+    Button refreshButton;
+
+    public SwipeRefreshLayout swipeRefresh;
+
+    public DevoirController ControllerDevoir;
     List<Devoir> devoirs = new ArrayList<>();
 
     @Override
@@ -46,14 +55,7 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Toolbar
-        MaterialToolbar toolbar = findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayUseLogoEnabled(true);
-            getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
-        }
 
         // RecyclerView
         RecyclerView recyclerView = findViewById(R.id.recyclerView);
@@ -63,31 +65,44 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setAdapter(adapter);
 
         // API
-        apiServices = RetrofitConnection.getClient().create(apiServices.class);
-        chargerDevoirs();
+        apiServices = RetrofitConnection.getClient().create(ApiServices.class);
+
+
+        //Ajout du controller de refresh et du refresh quand on swipe
+        swipeRefresh = findViewById(R.id.swipeRefresh);
+        ControllerDevoir = new DevoirController(devoirs, adapter, swipeRefresh);
+
+        swipeRefresh.setOnRefreshListener(() -> {
+            ControllerDevoir.refreshDevoirs();
+            Log.d("ctrl", "devoirs rechargés");
+        });
+        //Chargement initial du recyclerView via refresh
+        ControllerDevoir.refreshDevoirs();
+
+        //Component
+
+        // Toolbar
+        MaterialToolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        //Bouton refresh
+        refreshButton = findViewById(R.id.btnRefresh);
+        refreshButton.setOnClickListener(v -> {
+            ControllerDevoir.refreshDevoirs();
+            Log.d("ctrl", "devoirs rechargés");
+        });
+
+        //Rend le logo ToDesk visible
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayUseLogoEnabled(true);
+            getSupportActionBar().setLogo(R.drawable.ic_launcher_foreground);
+        }
     }
+    //Ajout des composants du menu
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
-    }
-    private void chargerDevoirs() {
-        apiServices.getDevoirs().enqueue(new Callback<List<Devoir>>() {
-            @Override
-            public void onResponse(Call<List<Devoir>> call, Response<List<Devoir>> response) {
-
-                if (response.isSuccessful() && response.body() != null) {
-                    devoirs.addAll(response.body());
-                    adapter.notifyDataSetChanged();
-                } else {
-                    Log.e("API_TEST", "Réponse vide ou erreur");
-                }
-            }
-            @Override
-            public void onFailure(Call<List<Devoir>> call, Throwable t) {
-                Log.e("API_TEST", "Erreur : " + t.getMessage());
-            }
-        });
     }
 
 }

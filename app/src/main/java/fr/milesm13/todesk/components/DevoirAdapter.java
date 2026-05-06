@@ -3,6 +3,8 @@ package fr.milesm13.todesk.components;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,8 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.ViewHolder
 
     private List<Devoir> devoirs;
 
+    private int lastPosition = -1;
+
     public DevoirAdapter(List<Devoir> devoirs) {
         this.devoirs = devoirs;
     }
@@ -24,6 +28,10 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.ViewHolder
     @Override
     public int getItemCount() {
         return devoirs.size();
+    }
+
+    public void resetAnimation() {
+        lastPosition = -1;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -46,10 +54,19 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.ViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
+
+
         Devoir d = devoirs.get(position);
         holder.title.setText(d.getTitle());
         holder.content.setText(d.getDescription());
         holder.date.setText(d.getDate());
+
+        if (position > lastPosition) {
+            Animation animation = AnimationUtils.loadAnimation(holder.itemView.getContext(), R.anim.cards_anim);
+            animation.setStartOffset(position * 100L);
+            holder.itemView.startAnimation(animation);
+            lastPosition = position;
+        }
     }
 
 
