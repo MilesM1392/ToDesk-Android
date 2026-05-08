@@ -3,7 +3,11 @@
     <color name="main_blue">#405c99</color>
     <color name="primary_text">#FFFFFF</color>
     <color name="card_devoir">#151515</color>
-
+    <color name="home_card_gradient">#121212</color>
+    <color name="autre_gradient">#395B98</color>
+    <color name="background">#000000</color>
+    <color name="homecard_primary_text">#FFFFFF</color>
+    <color name="homecard_sec_color">#FEFEFE</color>
 
 
 </resources>

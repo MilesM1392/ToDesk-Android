@@ -6,5 +6,10 @@
     <color name="primary_text">#1A1A2E</color>
     <color name="sec_text">#FFFFFF</color>
     <color name="card_devoir">#FFFFFF</color>
+    <color name="background">#F5F7FB</color>
+    <color name="home_card_gradient">#FAFBFF</color>
+    <color name="autre_gradient">#6A99FE</color>
+    <color name="homecard_primary_text">#1A1A2E</color>
+    <color name="homecard_sec_color">#717182</color>
 
 </resources>

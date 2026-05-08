@@ -5,7 +5,6 @@
     tools:ignore="ExtraText">
     <item
         android:id="@+id/action_profile"
-        android:title=""
         android:icon="@drawable/profil"
         app:showAsAction="always"/>
 </menu>
