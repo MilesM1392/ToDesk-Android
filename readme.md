@@ -12,8 +12,9 @@ Cette application permet de consulter une liste de devoirs récupérée depuis u
 
 ## 🎯 Objectif
 
-Ce projet a été réalisé dans un cadre scolaire afin de :
+Ce projet a été réalisé dans un cadre personnel afin de :
 
+- Avoir une expérience simplifiée du site ToDesk (todesk.milesm.fr) pour un usage mobile
 - Développer une application Android native complète
 - Apprendre à consommer une API REST avec Retrofit
 - Utiliser RecyclerView pour des listes dynamiques
