@@ -3,6 +3,7 @@ package fr.milesm13.todesk;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
+import android.view.View;
 import android.widget.Button;
 
 import androidx.activity.EdgeToEdge;
@@ -25,7 +26,7 @@ import fr.milesm13.todesk.services.ApiServices;
 import fr.milesm13.todesk.services.Devoir;
 import fr.milesm13.todesk.services.RetrofitConnection;
 
-public class DevoirsActivity extends AppCompatActivity {
+public class DevoirsActivity extends AppCompatActivity implements DevoirController.DevoirView {
 
     public ApiServices apiServices;
 
@@ -35,8 +36,13 @@ public class DevoirsActivity extends AppCompatActivity {
 
     public SwipeRefreshLayout swipeRefresh;
 
+    RecyclerView recyclerView;
+    View errorLayout;
+
     public DevoirController ControllerDevoir;
     List<Devoir> devoirs = new ArrayList<>();
+
+    View rootView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,10 +59,11 @@ public class DevoirsActivity extends AppCompatActivity {
             return insets;
         });
 
+        // RecyclerView et error layout
+        errorLayout = findViewById(R.id.errorLayout);
+        recyclerView = findViewById(R.id.recyclerView);
 
 
-        // RecyclerView
-        RecyclerView recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
         //Adapter du recycler view
         adapter = new DevoirAdapter(devoirs);
@@ -68,7 +75,8 @@ public class DevoirsActivity extends AppCompatActivity {
 
         //Ajout du controller de refresh et du refresh quand on swipe
         swipeRefresh = findViewById(R.id.swipeRefresh);
-        ControllerDevoir = new DevoirController(devoirs, adapter, swipeRefresh);
+        rootView = findViewById(R.id.devoirs_activity);
+        ControllerDevoir = new DevoirController(devoirs, adapter, swipeRefresh, rootView, this);
 
         swipeRefresh.setOnRefreshListener(() -> {
             ControllerDevoir.refreshDevoirs();
@@ -101,5 +109,18 @@ public class DevoirsActivity extends AppCompatActivity {
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
         return true;
+    }
+
+    @Override
+    public void showDevoirs(List<Devoir> devoirs) {
+        errorLayout.setVisibility(View.GONE);
+        recyclerView.setVisibility(View.VISIBLE);
+    }
+
+    @Override
+    public void showError(String message) {
+        recyclerView.setVisibility(View.GONE);
+        errorLayout.setVisibility(View.VISIBLE);
+
     }
 }

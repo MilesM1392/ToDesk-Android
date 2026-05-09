@@ -1,8 +1,14 @@
 package fr.milesm13.todesk.controllers;
 
+import android.graphics.Color;
 import android.util.Log;
+import android.view.View;
+import android.widget.Toast;
 
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
+import com.google.android.material.snackbar.Snackbar;
 
 import java.util.List;
 
@@ -17,13 +23,22 @@ public class DevoirController {
     private DevoirsUpdater updater;
     private SwipeRefreshLayout swipeRefresh;
 
-    public DevoirController(List<Devoir> devoirs, DevoirAdapter adapter, SwipeRefreshLayout swipeRefresh) {
+    private View rootView;
+
+    private DevoirView view;
+
+    public DevoirController(List<Devoir> devoirs, DevoirAdapter adapter, SwipeRefreshLayout swipeRefresh, View rootView, DevoirView view) {
         this.devoirs = devoirs;
         this.adapter = adapter;
         this.swipeRefresh = swipeRefresh;
         this.updater = new DevoirsUpdater();
+        this.rootView = rootView;
+        this.view = view;
     }
-
+    public interface DevoirView {
+        void showDevoirs(List<Devoir> devoirs);
+        void showError(String message);
+    }
     public void refreshDevoirs() {
 
         swipeRefresh.setRefreshing(true); // start spinner
@@ -32,6 +47,7 @@ public class DevoirController {
 
             @Override
             public void onSuccess(List<Devoir> newDevoirs) {
+                view.showDevoirs(newDevoirs);
                 devoirs.clear();
                 devoirs.addAll(newDevoirs);
                 adapter.notifyDataSetChanged();
@@ -41,7 +57,14 @@ public class DevoirController {
 
             @Override
             public void onError(String error) {
+                view.showError(error);
                 swipeRefresh.setRefreshing(false); // stop spinner même en erreur
+
+                Log.d("SNACKBAR", "Erreur reçue : " + error);
+                Snackbar snackbar = Snackbar.make(rootView, error, Snackbar.LENGTH_LONG);
+                snackbar.show();
+
+
             }
         });
     }
