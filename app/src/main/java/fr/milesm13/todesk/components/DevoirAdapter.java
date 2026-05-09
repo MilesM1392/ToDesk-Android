@@ -39,8 +39,8 @@ public class DevoirAdapter extends RecyclerView.Adapter<DevoirAdapter.ViewHolder
 
         public ViewHolder(View itemView) {
             super(itemView);
-            title = itemView.findViewById(R.id.title);
-            content = itemView.findViewById(R.id.content);
+            title = itemView.findViewById(R.id.subjectBadge);
+            content = itemView.findViewById(R.id.title);
             date = itemView.findViewById(R.id.date);
         }
     }

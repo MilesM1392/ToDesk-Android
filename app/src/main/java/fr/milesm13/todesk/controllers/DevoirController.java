@@ -35,7 +35,7 @@ public class DevoirController {
                 devoirs.clear();
                 devoirs.addAll(newDevoirs);
                 adapter.notifyDataSetChanged();
-                adapter.resetAnimation(); // 👈 on reset
+                adapter.resetAnimation(); // on reset
                 swipeRefresh.setRefreshing(false); // stop spinner
             }
 
