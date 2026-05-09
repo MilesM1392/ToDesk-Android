@@ -8,6 +8,18 @@ Une application Android moderne de gestion de devoirs permettant aux étudiants 
 
 Cette application permet de consulter une liste de devoirs récupérée depuis une API, avec une interface fluide, animée et adaptée au mode sombre.
 
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 36 (1)" src="https://github.com/user-attachments/assets/032afb2c-15c3-4414-9f9f-ea9059bd4561" />
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 36 (2)" src="https://github.com/user-attachments/assets/08d53577-0d4a-4137-b648-8ba18fce4bbe" />
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 36" src="https://github.com/user-attachments/assets/76ff03c5-6dcb-4c32-b157-04b17145ab9a" />
+
+
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 35 (1)" src="https://github.com/user-attachments/assets/229b87ed-c0bb-4a33-be13-7cdd87d68975" />
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 35" src="https://github.com/user-attachments/assets/7f3ee170-bd2f-4a65-bf93-832d0fd93ea1" />
+
+<img width="180" height="400" alt="WhatsApp Image 2026-05-09 at 14 48 36 (3)" src="https://github.com/user-attachments/assets/37111b44-b1fb-4625-829f-8556ec968241" />
+
+
+
 ---
 
 ## 🎯 Objectif
@@ -115,7 +127,7 @@ Le mode sombre est intégré afin de :
 
 ## 👨‍💻 Auteur
 
-Projet réalisé par **Aaron** dans un cadre scolaire.
+Projet réalisé par **Aaron Fahrasmane** dans un cadre d'apprentissage d'android et de Java.
 
 ---
 
